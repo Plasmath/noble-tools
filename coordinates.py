@@ -17,6 +17,20 @@ def octahedral(a,b): #Requires a > 1, 1 < b < a
             (a,-b,-1), (b,-a,-1), (b,-1,-a), (a,-1,-b), (1,-a,-b), (1,-b,-a),
             (-a,-b,-1), (-b,-a,-1), (-b,-1,-a), (-a,-1,-b), (-1,-a,-b), (-1,-b,-a)]
 
+def kioctahedral(a,b): #Chiral octahedral. Requires a > 1, 1 < b < a
+    return [(a,b,1),(-a,-b,1),(-a,b,-1),(a,-b,-1),
+            (b,1,a),(-b,-1,a),(-b,1,-a),(b,-1,-a),
+            (1,a,b),(-1,-a,b),(-1,a,-b),(1,-a,-b),
+            (-b,a,1),(b,-a,1),(b,a,-1),(-b,-a,-1),
+            (-a,1,b),(a,-1,b),(a,1,-b),(-a,-1,-b),
+            (-1,b,a),(1,-b,a),(1,b,-a),(-1,-b,-a)]
+
+def pyritohedral(a,b): #Requires a > 1, 1 < b < a
+    return [(a,b,1),(1,a,b),(b,1,a),(-a,b,1),(-1,a,b),(-b,1,a),
+            (a,-b,1),(1,-a,b),(b,-1,a),(-a,-b,1),(-1,-a,b),(-b,-1,a),
+            (a,b,-1),(1,a,-b),(b,1,-a),(-a,b,-1),(-1,a,-b),(-b,1,-a),
+            (a,-b,-1),(1,-a,-b),(b,-1,-a),(-a,-b,-1),(-1,-a,-b),(-b,-1,-a)]
+
 g = (sqrt(5)+1)/2 #golden ratio
 G = (sqrt(5)+3)/2 #golden ratio plus 1
 

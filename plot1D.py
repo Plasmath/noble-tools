@@ -2,7 +2,7 @@
 #Also relies on numpy
 import matplotlib.pyplot as plt
 import numpy as np
-from coordinates import tetrahedral, octahedral, icosahedral, mergepoints
+from coordinates import tetrahedral, octahedral, kioctahedral, pyritohedral, icosahedral, mergepoints
 from volumes import findvols
 
 """Specifications for plotting"""

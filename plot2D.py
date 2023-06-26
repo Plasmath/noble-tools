@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import matplotlib.colors as col
 import numpy as np
-from coordinates import tetrahedral, octahedral, icosahedral
+from coordinates import tetrahedral, octahedral, kioctahedral, pyritohedral, icosahedral,
 from volumes import minvol
 
 """Specifications for plotting"""
