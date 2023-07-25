@@ -1,5 +1,5 @@
 import numpy as np
-#Tools for working with the volumes of tetrahedra
+#Tools for working with the volumes of tetrahedra (and critical points/planes/curves)
 
 #Find volume of tetrahedron with vertices a, b, c, and d (multiplied by 6 because that requires less calculation)
 def volume(a,b,c,d):
@@ -34,3 +34,34 @@ def minvol(points, cap):
         if x < m:
             m = x
     return m
+
+#version of volume function used for export programs
+def symvol(p1,p2,p3,p4):
+    x1, y1, z1 = p1
+    x2, y2, z2 = p2
+    x3, y3, z3 = p3
+    x4, y4, z4 = p4
+    return (x1*y2*z3 - x1*y2*z4 - x1*y3*z2 + x1*y3*z4 
+          + x1*y4*z2 - x1*y4*z3 - x2*y1*z3 + x2*y1*z4 
+          + x2*y3*z1 - x2*y3*z4 - x2*y4*z1 + x2*y4*z3 
+          + x3*y1*z2 - x3*y1*z4 - x3*y2*z1 + x3*y2*z4 
+          + x3*y4*z1 - x3*y4*z2 - x4*y1*z2 + x4*y1*z3 
+          + x4*y2*z1 - x4*y2*z3 - x4*y3*z1 + x4*y3*z2)
+
+#Add plane to critical plane
+def addplane(l,p):
+    sp = set(p)
+    newl = [set(q) for q in l]
+    for q in l:
+        if len(q.intersection(set(sp))) > 2:
+            sp = sp.union(q)
+            newl.remove(q)
+    newl.append(sp)
+    
+    return newl
+
+#Combine critical planes together
+def combineplanes(l1,l2):
+    for p in l2:
+        l1 = addplane(l1,p)
+    return l1
