@@ -174,8 +174,22 @@ def tid(b):
             (-b*G-g, b*g+g, b+g),(-b*G-g, -b*g-g, b+g),(-b*G-g, b*g+g, -b-g),(-b*G-g, -b*g-g, -b-g)]
 
 def ti(a):
-    pass
-    #FINISH LATER
+    makesymb()
+    return [(0, a, a*g+2*g),(0, -a, a*g+2*g),(0, a, -a*g-2*g),(0, -a, -a*g-2*g),
+            (a*g+2*g, 0, a),(-a*g-2*g, 0, a),(a*g+2*g, 0, -a),(-a*g-2*g, 0, -a),
+            (a, a*g+2*g, 0),(-a, a*g+2*g, 0),(a, -a*g-2*g, 0),(-a, -a*g-2*g, 0),
+            (g, a+1, a*g+G),(g, -a-1, a*g+G),(g, a+1, -a*g-G),(g, -a-1, -a*g-G),
+            (-g, a+1, a*g+G),(-g, -a-1, a*g+G),(-g, a+1, -a*g-G),(-g, -a-1, -a*g-G),
+            (a+1, a*g+G, g),(a+1, -a*g-G, g),(a+1, a*g+G, -g),(a+1, -a*g-G, -g),
+            (-a-1, a*g+G, g),(-a-1, -a*g-G, g),(-a-1, a*g+G, -g),(-a-1, -a*g-G, -g),
+            (1, a+G, a*g+g),(1, -a-G, a*g+g),(1, a+G, -a*g-g),(1, -a-G, -a*g-g),
+            (-1, a+G, a*g+g),(-1, -a-G, a*g+g),(-1, a+G, -a*g-g),(-1, -a-G, -a*g-g),
+            (a*g+G, g, a+1),(a*g+G, -g, a+1),(a*g+G, g, -a-1),(a*g+G, -g, -a-1),
+            (-a*g-G, g, a+1),(-a*g-G, -g, a+1),(-a*g-G, g, -a-1),(-a*g-G, -g, -a-1),
+            (a*g+g, 1, a+G),(a*g+g, -1, a+G),(a*g+g, 1, -a-G),(a*g+g, -1, -a-G),
+            (-a*g-g, 1, a+G),(-a*g-g, -1, a+G),(-a*g-g, 1, -a-G),(-a*g-g, -1, -a-G),
+            (a+G, a*g+g, 1),(a+G, -a*g-g, 1),(a+G, a*g+g, -1),(a+G, -a*g-g, -1),
+            (-a-G, a*g+g, 1),(-a-G, -a*g-g, 1),(-a-G, a*g+g, -1),(-a-G, -a*g-g, -1)]
 
 #merge identical points together
 def mergepoints(points):
