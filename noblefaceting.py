@@ -7,6 +7,16 @@ octgroup = eval(open("groups/octgroup.txt","r").read())
 #Icosahedral symmetry group
 ikegroup = eval(open("groups/ikegroup.txt","r").read())
 
+#Various 1D symmetry groups
+ratetgroup = eval(open("C:/Users/thepl/OneDrive/Documents/noble-tools/groups/1D/ratetgroup.txt","r").read())
+tutgroup = eval(open("C:/Users/thepl/OneDrive/Documents/noble-tools/groups/1D/tutgroup.txt","r").read())
+sircogroup = eval(open("C:/Users/thepl/OneDrive/Documents/noble-tools/groups/1D/sircogroup.txt","r").read())
+ticgroup = eval(open("C:/Users/thepl/OneDrive/Documents/noble-tools/groups/1D/ticgroup.txt","r").read())
+toegroup = eval(open("C:/Users/thepl/OneDrive/Documents/noble-tools/groups/1D/toegroup.txt","r").read())
+sridgroup = eval(open("C:/Users/thepl/OneDrive/Documents/noble-tools/groups/1D/sridgroup.txt","r").read())
+tidgroup = eval(open("C:/Users/thepl/OneDrive/Documents/noble-tools/groups/1D/tidgroup.txt","r").read())
+tigroup = eval(open("C:/Users/thepl/OneDrive/Documents/noble-tools/groups/1D/tigroup.txt","r").read())
+
 def permute(p,q): #permute p based on the elements of q
     size = len(p)
     
