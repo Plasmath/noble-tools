@@ -1,7 +1,6 @@
 import numpy as np
 import sympy as sp
-from coordinates import tetrahedral, octahedral, mergepoints
-from coordinates import icosahedral_symbolic as icosahedral #rename for ease of use
+from coordinates import ratet, tut, sirco, tic, toe, srid, tid, ti, doSymbolic
 from volumes import symvol, maketets, combineplanes
 from itertools import groupby
 
@@ -12,9 +11,7 @@ Creates three files within the output file:
 """
 
 """Specifications for solving"""
-symmetry = octahedral #Symmetry used
-startpoint = (1,1) #First sample point on line, value when a = 0
-endpoint = (2,1) #Second sample point on line, value when a = 1
+army = srid #Symmetry used
 extension = sp.sqrt(5) #Optional extension to factoring, use sp.sqrt(5) on icosahedral
 
 #volume function
@@ -36,23 +33,11 @@ def hastripleintersection(l1,l2): #detects whether the intersection of two cubic
 def mps(poly): #"make poly string": converts to WolframScript-readable format
     return str(poly).replace("**","^").replace("sqrt(5)","Sqrt[5]").replace(" ","")
 
-def collapse(coords): #collapse equivalent points together and create a list of the equivalences
-    collapsed = []
-    equivalence = []
-    for i in range(len(coords)):
-        point = coords[i]
-        if point in collapsed:
-            equivalence[collapsed.index(point)].add(i)
-        else:
-            collapsed.append(point)
-            equivalence.append({i})
-    return collapsed, equivalence
-        
-
 def main():
+    doSymbolic = True #use sympy coordinates
+    
     a = sp.Symbol("a")
-    coords = symmetry(endpoint[0]*a + startpoint[0]*(1-a), endpoint[1]*a + startpoint[1]*(1-a)) #interpolates between startpoint and endpoint
-    coords, equals = collapse(coords) #remove duplicate points, as otherwise this breaks critical plane combination
+    coords = army(a)
     
     print("Obtained",len(coords),"vertices.")
     
@@ -108,9 +93,6 @@ def main():
     #Files to be written to
     fcubics = open("output/cubics.txt","w")
     fplanes = open("output/critical-planes.txt","w")
-    fequals = open("output/equivalent-points.txt", "w")
-    
-    fequals.write('['+str(coords)+','+str(equals)+']')
     
     #Finding intersections
     fplanes.write("shared: " + str(sharedplanes) + "\n") #sharedplanes was made back in the first matching stage
@@ -125,7 +107,6 @@ def main():
     print('Finished.')
     fcubics.close()
     fplanes.close()
-    fequals.close()
 
 if __name__ == "__main__":
     main()

@@ -14,7 +14,7 @@ cubics = {}
 For[i = 1, i < Length[cubicsdata]+1, i++,
 	AppendTo[cubics, ToExpression[ cubicsdata[[i]][[2]] ] ] ]
 
-startval = Input["Input index to start at (1 if from beginning): "]
+startval = Input["Input index to start at (0 if from beginning): "]
 endval = Length[cubics] - 1
 
 Print["Solving..."]

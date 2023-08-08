@@ -8,3 +8,5 @@ The following programs are meant to be used as tools; all others help support th
 * For solving nobles in 1D, run these programs in order:
 ** **export1D.py**
 ** **intersect1D.py**
+** **solve1D.py**
+** Make sure to configure the two python files with the correct armies and symmetries before running.

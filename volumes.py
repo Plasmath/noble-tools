@@ -41,12 +41,13 @@ def symvol(p1,p2,p3,p4):
     x2, y2, z2 = p2
     x3, y3, z3 = p3
     x4, y4, z4 = p4
-    return (x1*y2*z3 - x1*y2*z4 - x1*y3*z2 + x1*y3*z4 
-          + x1*y4*z2 - x1*y4*z3 - x2*y1*z3 + x2*y1*z4 
-          + x2*y3*z1 - x2*y3*z4 - x2*y4*z1 + x2*y4*z3 
-          + x3*y1*z2 - x3*y1*z4 - x3*y2*z1 + x3*y2*z4 
-          + x3*y4*z1 - x3*y4*z2 - x4*y1*z2 + x4*y1*z3 
-          + x4*y2*z1 - x4*y2*z3 - x4*y3*z1 + x4*y3*z2)
+    
+    return (- x3*y2*z1 + x4*y2*z1 + x2*y3*z1 - x4*y3*z1 
+            - x2*y4*z1 + x3*y4*z1 + x3*y1*z2 - x4*y1*z2
+            - x1*y3*z2 + x4*y3*z2 + x1*y4*z2 - x3*y4*z2 
+            - x2*y1*z3 + x4*y1*z3 + x1*y2*z3 - x4*y2*z3 
+            - x1*y4*z3 + x2*y4*z3 + x2*y1*z4 - x3*y1*z4 
+            - x1*y2*z4 + x3*y2*z4 + x1*y3*z4 - x2*y3*z4)
 
 #Add plane to critical plane
 def addplane(l,p):

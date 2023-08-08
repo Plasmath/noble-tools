@@ -1,10 +1,10 @@
 from volumes import combineplanes
-from noblefaceting import noblecheck, fullfilter, generate, tetgroup, octgroup, ikegroup
-from coordinates import tetrahedral, octahedral, icosahedral
-from sympy import Symbol
+from noblefaceting import noblecheck, fullfilter, generate
+from noblefaceting import ratetgroup, tutgroup, sircogroup, ticgroup, toegroup, sridgroup, tidgroup, tigroup
+from coordinates import ratet, tut, sirco, tic, toe, srid, tid, ti, doSymbolic
 
-symmetry = octahedral #Army to use (should be equal to group)
-group = octgroup #Group to use
+army = srid #Army to use (should be equal to group)
+group = sridgroup #Group to use
 minprecision = 8 #minimum digits of precision on solutions
 minvalue = 1e-8 #minimum value of solutions, as some solutions at 0 are interpreted as small positive numbers
 
@@ -17,30 +17,9 @@ def coordinates(aval, a, coords): #generate coordinates
     points = [ [evaluate(p[0], aval, a), evaluate(p[1], aval, a), evaluate(p[2], aval, a)] for p in coords ]
     return points
 
-def collapsegroup(group, equals): #Merges equivalent points within group. May return error if done incorrectly.
-    size = len(equals)
-    
-    #collapse the vertices of the group
-    newgroup = []
-    for i in range(size):
-        exelement = list(equals[i])[0]        
-        newgroup.append([None]*size)
-        
-        for j in range(size):
-            equivclass = equals[j]
-            mappedclass = { group[exelement][k] for k in equivclass }
-            newgroup[i][j] = equals.index(mappedclass)
-        
-    return newgroup
-
 def main():
     global group
-    print("Creating group...")
-    
-    a = Symbol("a")
-    
-    coords, equals = eval(open("output/equivalent-points.txt").read())
-    group = collapsegroup(group, equals)
+    doSymbolic = False
     
     print("Importing intersection data...")
     
@@ -130,16 +109,21 @@ def main():
                     nobles.append(extra+[c])
     
     print("Found",len(nobles),"nobles.")
-    
+    summary = open("noble-output/summary.txt", "w")
     for i in range(len(nobles)):
         n = nobles[i][2]
         faces = generate(n, group)
         
         file = open("noble-output/noble-"+str(i)+".off", "w")
-        file.write("OFF\n")
-        file.write(str(len(coords))+" "+str(len(faces))+" 0\n") #not bothering calculating edge count
         
-        offcoords = coordinates(nobles[i][0], a, coords)
+        print("noble-"+str(i), nobles[i][0])
+        
+        offcoords = army(nobles[i][0])
+        
+        #first two lines
+        file.write("OFF\n")
+        file.write(str(len(offcoords))+" "+str(len(faces))+" 0\n") #not bothering calculating edge count
+        
         for c in offcoords:
             file.write(str(c[0])+" "+str(c[1])+" "+str(c[2])+"\n")
         
@@ -149,6 +133,10 @@ def main():
             file.write(s)
         
         file.close()
+        
+        summary.write("noble-"+str(i)+" "+str(nobles[i][0])+"\n")
+        
+        
 
 if __name__ == "__main__":
     main()
