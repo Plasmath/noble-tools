@@ -87,5 +87,8 @@ def noblecheck(p, group): #checks for noble polyhedra within a plane
                     lnew.append(poly + [point])
         l = lnew.copy()
     
+    if cycles != []:
+        print(p,validedges)
+    
     #output results
     return cycles

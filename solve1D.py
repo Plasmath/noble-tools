@@ -3,8 +3,8 @@ from noblefaceting import noblecheck, fullfilter, generate
 from noblefaceting import ratetgroup, tutgroup, sircogroup, ticgroup, toegroup, sridgroup, tidgroup, tigroup
 from coordinates import ratet, tut, sirco, tic, toe, srid, tid, ti, doSymbolic
 
-army = srid #Army to use (should be equal to group)
-group = sridgroup #Group to use
+army = toe #Army to use (should be equal to group)
+group = toegroup #Group to use
 minprecision = 8 #minimum digits of precision on solutions
 minvalue = 1e-8 #minimum value of solutions, as some solutions at 0 are interpreted as small positive numbers
 
