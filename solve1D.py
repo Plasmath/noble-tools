@@ -19,7 +19,7 @@ def coordinates(aval, a, coords): #generate coordinates
 
 def main():
     global group
-    doSymbolic = False
+    doSymbolic(False) #Use decimal coordinates
     
     print("Importing intersection data...")
     

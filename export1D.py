@@ -11,7 +11,7 @@ Creates two files within the output file:
 """
 
 """Specifications for solving"""
-army = toe #Symmetry used
+army = tid #Symmetry used
 extension = sp.sqrt(5) #Optional extension to factoring, use sp.sqrt(5) on icosahedral
 
 #volume function
@@ -34,10 +34,12 @@ def mps(poly): #"make poly string": converts to WolframScript-readable format
     return str(poly).replace("**","^").replace("sqrt(5)","Sqrt[5]").replace(" ","")
 
 def main():
-    doSymbolic = True #use sympy coordinates
+    doSymbolic(True) #use sympy coordinates
     
     a = sp.Symbol("a")
     coords = army(a)
+    
+    print(coords[8])
     
     print("Obtained",len(coords),"vertices.")
     
@@ -50,6 +52,7 @@ def main():
         if i % 5000 == 0:
             print("Finished computing",i,"tets out of",length)
         tet = tets[i]
+        
         cubics.append([sp.expand(symvol(coords[tet[0]],coords[tet[1]],coords[tet[2]],coords[tet[3]])),[set(tet)]])
     print("Finished computing",length,"tets out of", length)
     

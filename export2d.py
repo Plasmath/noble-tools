@@ -34,6 +34,8 @@ def mps(poly): #"make poly string": converts to WolframScript-readable format
     return str(poly).replace("**","^").replace("sqrt(5)","Sqrt[5]").replace(" ","")
 
 def main():
+    doSymbolic(True) #use symbolic coordinates
+    
     a = sp.Symbol('a')
     b = sp.Symbol('b')
     coords = army(a,b)

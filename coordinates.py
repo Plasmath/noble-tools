@@ -2,7 +2,10 @@ from math import sqrt
 from sympy import sqrt as sp_sqrt
 #Program for obtaining coordinates of noble polyhedra hulls
 
-doSymbolic = False #Whether or not to use Sympy notation or floats
+doSymbolicBool = False #Whether or not to use Sympy notation or floats
+def doSymbolic(t): 
+    global doSymbolicBool
+    doSymbolicBool = t
 
 def tetrahedral(a,b): #Requires a > 0, b > 0 to obtain unique coordinates
     return [(1,(1+a),(1+a+b)), ((1+a),1,(1+a+b)), ((1+a),(1+a+b),1), (1,(1+a+b),(1+a)), ((1+a+b),1,(1+a)), ((1+a+b),(1+a),1),
@@ -82,8 +85,8 @@ g = (sqrt(5)+1)/2 #golden ratio
 G = (sqrt(5)+3)/2 #golden ratio plus 1
 def makesymb(): #b is true/false
     global g
-    global G    
-    if doSymbolic:
+    global G
+    if doSymbolicBool:
         g = (sp_sqrt(5)+1)/2
         G = (sp_sqrt(5)+3)/2
     else:
