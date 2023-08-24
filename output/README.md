@@ -1,0 +1,1 @@
+This folder contains intermediate outputs that may be used by other files in the repository.
