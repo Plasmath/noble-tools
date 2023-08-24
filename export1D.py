@@ -39,8 +39,6 @@ def main():
     a = sp.Symbol("a")
     coords = army(a)
     
-    print(coords[8])
-    
     print("Obtained",len(coords),"vertices.")
     
     tets = maketets(range(len(coords))) #Tetrahedra as indices in coords, used for critical plane calculation
