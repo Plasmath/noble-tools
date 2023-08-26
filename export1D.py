@@ -18,9 +18,10 @@ extension = sp.sqrt(5) #Optional extension to factoring, use sp.sqrt(5) on icosa
 vol = lambda p1,p2,p3,p4 : sp.expand(symvol(p1,p2,p3,p4))
 
 #Decomposes polynomial into polynomial factors
+#Switch back to previous iteration once Sympy issue #25592 is solved
 def factorize(poly):
-    L = sp.factor_list(poly, extension = extension)[1] #list of factors, with multiplicity
-    return [f[0] for f in L if not f[0].is_constant()] #remove multiplicity and constants because we don't care about them
+    factored = [f for f in sp.factor(poly, extension = extension).args if not f.is_constant()] #remove constants because we don't care about them
+    return [sp.factor_list(f)[1][0][0] for f in factored] #remove multiplicity too
 
 def hastripleintersection(l1,l2): #detects whether the intersection of two cubics could actually form new nobles
     for s1 in l1:
@@ -61,6 +62,8 @@ def main():
         if c[0] == 0: #0 can't be factored
             sharedplanes = combineplanes(sharedplanes, c[1])
             continue
+        if c[0].is_constant(): #Constants can be ignored, because they have no roots
+            continue
         
         newcubic = True
         for c1 in cubicsmatched:
@@ -74,9 +77,9 @@ def main():
     print("Factoring cubics...")
     cubicsfactored = [] #Separate cubics into their component factors
     for c in cubicsmatched:
-        
         fl = [ [factor,c[1]] for factor in factorize(c[0]) ]
         cubicsfactored += fl
+        
     cubicsfactored = [k for k,v in groupby(sorted(cubicsfactored, key=repr))]
     
     print("Final round of matching...")
