@@ -38,14 +38,12 @@ For[i = startval, i <= endval, i++,
 	solutions = {ToRules[reduceSolutions]};
 	
 	(* Make solutions numeric rather than symbolic*)
-
-
 	If[ Length[solutions] > 0,
 		sols = {a,b} /. solutions;
 
 		For[j = 1, j <= Length[sols], j++,
-			sols[[j]] = {N[sols[[j]][[1]]],
-						 N[sols[[j]][[2]]] /. a -> N[sols[[j]][[1]]]}
+			sols[[j]] = {N[sols[[j]][[1]], 25],
+						 N[sols[[j]][[2]], 25] /. a -> N[sols[[j]][[1]], 25]}
 		];
 
 		AppendTo[solves, sols],
