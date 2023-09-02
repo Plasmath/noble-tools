@@ -15,35 +15,50 @@ cubics = {}
 For[i = 1, i < Length[cubicsdata]+1, i++,
 	AppendTo[cubics, ToExpression[ cubicsdata[[i]][[2]] ] ] ]
 
-startval = Input["Input index to start at (0 if from beginning): "]
-endval = Length[pairsdata] - 1
+startval = Input["Input index to start at (1 if from beginning): "]
+endval = Length[pairsdata]
 
 Print["Solving..."]
 
+Print[ endval "pairs." ]
+
 solves = {}
 For[i = startval, i <= endval, i++,
-	
-	If[ Mod[i, 250] == 0, Print[i] ];
 
-	t = pairsdata[[i + 1]];
+	If[ Mod[i, 1000] == 0, Print[i] ];
+
+	t = pairsdata[[i]];
 
 	poly1 = cubics[[ t[[1]]+1 ]];
 	poly2 = cubics[[ t[[2]]+1 ]];
 	
-	solutions = Check[ NSolve[{poly1 == 0, poly2 == 0}, {a,b}, PositiveReals, 20],
-				poly1 >>> errors.txt; poly2 >>> errors.txt
+	reduceSolutions = Check[ Reduce[poly1 == 0 && poly2 == 0, {a,b}, PositiveReals],
+				{poly1, poly2} >>> output/errors.txt
 				];
+	solutions = {ToRules[reduceSolutions]};
+	
+	(* Make solutions numeric rather than symbolic*)
+
 
 	If[ Length[solutions] > 0,
-		AppendTo[solves, {a,b}/.solutions],
+		sols = {a,b} /. solutions;
+
+		For[j = 1, j <= Length[sols], j++,
+			sols[[j]] = {N[sols[[j]][[1]]],
+						 N[sols[[j]][[2]]] /. a -> N[sols[[j]][[1]]]}
+		];
+
+		AppendTo[solves, sols],
+
 		AppendTo[solves, {}] ]
-	]
 	
-	If[ Mod[i, 30000] == 0, 
+	If[ Mod[i, 30000] == 0,  (* Export in case of crashing *)
 		Export[ ToString[i] <> ".txt", solves];
 		solves = {} ];
+	]
 
-Export["output.txt", solves]
+
+Export["output/solutions.txt", solves]
 
 Print["Finished"]
 
