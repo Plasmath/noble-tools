@@ -29,11 +29,14 @@ def permute(p,q): #permute p based on the elements of q
 def generate(p,group): #copy plane vertices over symmetry group
     faces = []
     setfaces = []
+    equivalents = [] #symmetries of just plane p
     for i in group:
         perm = permute(p,i)
         if not set(perm) in setfaces:
             faces.append(perm)
             setfaces.append(set(perm))
+        elif set(perm) == set(p):
+            equivalents.append(perm)
     return faces
 
 def isduplicate(f,faces): #determine if f is already within the list of faces (not including symmetry)
@@ -55,10 +58,9 @@ def noblecheck(p, group): #checks for noble polyhedra within a plane
     
     validedges = [] #edges that could be used to form nobles, forming a graph
     for plane in planes:
-        e = sorted(tuple(p & set(plane))) #intersection of planes
-        
+        e = tuple(sorted(tuple(p & set(plane)))) #intersection of planes
         if len(e) == 2:
-            validedges.append(tuple(e))
+            validedges.append(e)
     
     #reformat validedges into a dictionary, for creating cycles
     edgedict = dict()
@@ -86,9 +88,6 @@ def noblecheck(p, group): #checks for noble polyhedra within a plane
                 else:
                     lnew.append(poly + [point])
         l = lnew.copy()
-    
-    if cycles != []:
-        print(p,validedges)
     
     #output results
     return cycles

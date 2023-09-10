@@ -1,4 +1,3 @@
-import numpy as np
 import sympy as sp
 from coordinates import tetrahedral, octahedral, icosahedral, doSymbolic
 from volumes import symvol, maketets, combineplanes
@@ -11,7 +10,7 @@ Creates two files within the output file:
 """
 
 """Specifications for solving"""
-army = tetrahedral #Symmetry used
+army = octahedral #Symmetry used
 extension = sp.sqrt(5) #Optional extension to factoring, use sp.sqrt(5) on icosahedral
 
 #volume function
@@ -19,8 +18,8 @@ vol = lambda p1,p2,p3,p4 : sp.expand(symvol(p1,p2,p3,p4))
 
 #Decomposes polynomial into polynomial factors
 def factorize(poly):
-    L = sp.factor_list(poly, extension = extension)[1] #list of factors, with multiplicity
-    return [f[0] for f in L if not f[0].is_constant()] #remove multiplicity and constants because we don't care about them
+    factored = [f for f in sp.factor(poly, extension = extension).args if not f.is_constant()] #remove constants because we don't care about them
+    return [sp.factor_list(f)[1][0][0] for f in factored] #remove multiplicity too
 
 def hastripleintersection(l1,l2): #detects whether the intersection of two cubics could actually form new nobles
     for s1 in l1:
@@ -89,7 +88,7 @@ def main():
     #Output to files
     fpairs = open("output/pairs.txt",'w') #Pairs of cubic plane curves to check for intersections of
     fcubics = open("output/cubics.txt",'w')
-    fplanes = open("output/faceting_data.txt",'w')
+    fplanes = open("output/critical-planes.txt",'w')
     for i in range(0,len(cubicsfinal)):
         fcubics.write(str(i) + ': ' + mps(cubicsfinal[i][0]) + "\n")
         fplanes.write(str(i) + ': ' + str(cubicsfinal[i][1]).replace(' ','')+"\n")

@@ -3,8 +3,8 @@ from noblefaceting import noblecheck, fullfilter, generate
 from noblefaceting import ratetgroup, tutgroup, sircogroup, ticgroup, toegroup, sridgroup, tidgroup, tigroup
 from coordinates import ratet, tut, sirco, tic, toe, srid, tid, ti, doSymbolic
 
-army = toe #Army to use (should be equal to group)
-group = toegroup #Group to use
+army = tid #Army to use (should be equal to group)
+group = tidgroup #Group to use
 minprecision = 8 #minimum digits of precision on solutions
 minvalue = 1e-8 #minimum value of solutions, as some solutions at 0 are interpreted as small positive numbers
 
@@ -102,7 +102,6 @@ def main():
         
         for pset in planes:
             cycles = noblecheck(pset, group) #faces of the nobles in this plane
-            
             for c in cycles:
                 if fullfilter(c, noblefaces, group): #filter out duplicates
                     noblefaces.append(c)
@@ -134,9 +133,7 @@ def main():
         
         file.close()
         
-        summary.write("noble-"+str(i)+" "+str(nobles[i][0])+"\n")
-        
-        
+        summary.write("noble-"+str(i)+" "+str(nobles[i])+"\n")
 
 if __name__ == "__main__":
     main()
