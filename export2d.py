@@ -46,8 +46,6 @@ def main():
     for i in range(len(tets)):
         if i % 1000 == 0:
             print('Finished computing',i,'tets out of',length)
-        if i == 5000:
-            break
         tet = tets[i]
         cubics.append([vol(coords[tet[0]],coords[tet[1]],coords[tet[2]],coords[tet[3]]),[set(tet)]])
     
