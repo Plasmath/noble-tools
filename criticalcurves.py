@@ -36,72 +36,46 @@ def main():
     
     a = sp.Symbol('a')
     b = sp.Symbol('b')
+    sqrt = sp.sqrt
     coords = army(a,b)
     
-    tets = maketets(range(len(coords))) #Tetrahedra as indices in coords, used for critical plane calculation
-    
+    #Open list of cubics
+    print("Importing file...")
     cubics = []
-    length = len(tets)
-    for i in range(len(tets)):
-        if i % 1000 == 0:
-            print('Finished computing',i,'tets out of',length)
-        tet = tets[i]
-        cubics.append([vol(coords[tet[0]],coords[tet[1]],coords[tet[2]],coords[tet[3]]),[set(tet)]])
+    for line in open("output/pycubics.txt").readlines():
+        c = eval(line)
+        cubics.append(c)
+    print(len(cubics))
     
-    print('Matching cubics...')
-    sharedplanes = [] #Planes that will always have volume 0 no matter what
-    cubicsmatched = [] #Duplicate cubics are matched together
-    for c in cubics:
-        if c[0] == 0: #0 can't be factored
-            sharedplanes = combineplanes(sharedplanes, c[1])
-            continue
-        
-        newcubic = True
-        for c1 in cubicsmatched:
-            #Check if first and second cubic are the same cubic
-            if c1[0] == c[0]:
-                newcubic = False
-                c1[1] = combineplanes(c1[1],c[1]) #Add second cubic's plane to this cubic
-        if newcubic: #Adding new cubics to the list
-            cubicsmatched.append(c)
-    
-    print("Factoring cubics...")
-    cubicsfactored = [] #Separate cubics into their component factors
-    for c in cubicsmatched:
-        fl = [ [factor,c[1]] for factor in factorize(c[0]) ]
-        cubicsfactored += fl
-    cubicsfactored = [k for k,v in groupby(sorted(cubicsfactored, key=repr))]
-    
-    print("Final round of matching...")
-    cubicsfinal = [] #Factored cubics are matched together
-    for c in cubicsfactored:
-        newcubic = True
-        for c1 in cubicsfinal:
-            #Check if first and second cubic are the same cubic
-            if c1[0] == c[0]:
-                newcubic = False
-                c1[1] = combineplanes(c1[1],c[1]) #Add second cubic's plane to this cubic
-        if newcubic: #Adding new cubics to the list
-            cubicsfinal.append(c)
+    #import critical planes
+    print("Importing critical planes...")
+    facetfile = open("output/critical-planes.txt").readlines()
+    criticalplanes = []
+    for planeline in facetfile:
+        planes = eval(planeline.split(': ')[1]) #the leading index of the line is removed
+        criticalplanes.append(planes)
     
     #Now for the fun part: faceting.
     print("Faceting nobles...")
     nobles = [] #noblefaces with extra data
-    for i in range(len(cubicsfinal)):
+    for i in range(len(cubics)):
         noblefaces = [] #list of faces of nobles in this army
         
-        cubic = cubicsfinal[i][0] #name of cubic        
-        planes = cubicsfinal[i][1] #the critical planes of this intersection
+        cubic = cubics[i] #name of cubic        
+        planes = criticalplanes[i] #the critical planes of this intersection
         
         for pset in planes:
             cycles = noblecheck(pset, group) #faces of the nobles in this plane
             for c in cycles:
                 if fullfilter(c, noblefaces, group): #filter out duplicates
                     noblefaces.append(c)
+        
+        if noblefaces != []:
+            nobles.append([cubic,noblefaces])
     
     #Export solutions, because these aren't offs this is pretty easily formatted
-    fsols = open("noble-output/critical-curves.txt")
-    fsols.write(nobles)
+    fsols = open("noble-output/critical-curves.txt","w")
+    fsols.write(str(nobles))
     print(nobles)
 
 if __name__ == "__main__":

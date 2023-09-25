@@ -77,7 +77,7 @@ def main():
     print("Factoring cubics...")
     cubicsfactored = [] #Separate cubics into their component factors
     for c in cubicsmatched:
-        fl = [ [factor,c[1]] for factor in factorize(c[0]) ]
+        fl = [ [factor,c[1]] for factor in factorize(c[0]) ] #c1 is a list of indices of coplanar points
         cubicsfactored += fl
         
     cubicsfactored = [k for k,v in groupby(sorted(cubicsfactored, key=repr))]

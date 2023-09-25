@@ -10,7 +10,7 @@ Creates two files within the output file:
 """
 
 """Specifications for solving"""
-army = octahedral #Symmetry used
+army = icosahedral #Symmetry used
 extension = sp.sqrt(5) #Optional extension to factoring, use sp.sqrt(5) on icosahedral
 
 #volume function
@@ -46,6 +46,8 @@ def main():
     for i in range(len(tets)):
         if i % 1000 == 0:
             print('Finished computing',i,'tets out of',length)
+        if i == 5000:
+            break
         tet = tets[i]
         cubics.append([vol(coords[tet[0]],coords[tet[1]],coords[tet[2]],coords[tet[3]]),[set(tet)]])
     
@@ -87,10 +89,12 @@ def main():
     
     #Output to files
     fpairs = open("output/pairs.txt",'w') #Pairs of cubic plane curves to check for intersections of
-    fcubics = open("output/cubics.txt",'w')
+    fcubics = open("output/cubics.txt",'w') #Cubics formatted for wolframscript
+    fpyc = open("output/pycubics.txt","w") #Cubics formatted for python
     fplanes = open("output/critical-planes.txt",'w')
     for i in range(0,len(cubicsfinal)):
         fcubics.write(str(i) + ': ' + mps(cubicsfinal[i][0]) + "\n")
+        fpyc.write(repr(cubicsfinal[i][0])+"\n")
         fplanes.write(str(i) + ': ' + str(cubicsfinal[i][1]).replace(' ','')+"\n")
         
         for j in range(i+1,len(cubicsfinal)):
