@@ -69,6 +69,8 @@ def toe(a):
             ( 0, a+1, a),( 0,-a-1, a),( 0, a+1,-a),( 0,-a-1,-a),
             ( 0, a, a+1),( 0,-a, a+1),( 0, a,-a-1),( 0,-a,-a-1)]
 
+print(ratet(2))
+
 def snic(a,b): #Chiral octahedral. Requires a > 1, 1 < b < a
     return [(a,b,1),(-a,-b,1),(-a,b,-1),(a,-b,-1),
             (b,1,a),(-b,-1,a),(-b,1,-a),(b,-1,-a),

@@ -19,6 +19,16 @@ sridgroup = eval(open("groups/1D/sridgroup.txt","r").read())
 tidgroup = eval(open("groups/1D/tidgroup.txt","r").read())
 tigroup = eval(open("groups/1D/tigroup.txt","r").read())
 
+#Chiral 1D symmetry groups
+kiratetgroup = eval(open("groups/1D/kiratetgroup.txt","r").read())
+kitutgroup = eval(open("groups/1D/kitutgroup.txt","r").read())
+kisircogroup = eval(open("groups/1D/kisircogroup.txt","r").read())
+kiticgroup = eval(open("groups/1D/kiticgroup.txt","r").read())
+kitoegroup = eval(open("groups/1D/kitoegroup.txt","r").read())
+kisridgroup = eval(open("groups/1D/kisridgroup.txt","r").read())
+kitidgroup = eval(open("groups/1D/kitidgroup.txt","r").read())
+kitigroup = eval(open("groups/1D/kitigroup.txt","r").read())
+
 def permute(p,q): #permute p based on the elements of q
     size = len(p)
     

@@ -1,10 +1,12 @@
 from volumes import combineplanes
 from noblefaceting import noblecheck, fullfilter, generate
 from noblefaceting import ratetgroup, tutgroup, sircogroup, ticgroup, toegroup, sridgroup, tidgroup, tigroup
+from noblefaceting import kiratetgroup, kitutgroup, kisircogroup, kiticgroup, kitoegroup, kisridgroup, kitidgroup, kitigroup
 from coordinates import ratet, tut, sirco, tic, toe, srid, tid, ti, doSymbolic
 
 army = tid #Army to use (should be equal to group)
 group = tidgroup #Group to use
+kigroup = kitidgroup #Chiral group to use. These symmetries have to be checked separately due to noble polyhedra being able to have lower symmetry compared to their convex hull 
 minprecision = 8 #minimum digits of precision on solutions
 minvalue = 1e-8 #minimum value of solutions, as some solutions at 0 are interpreted as small positive numbers
 
@@ -94,6 +96,7 @@ def main():
     #Now for the fun part: faceting.
     print("Faceting nobles...")
     nobles = [] #noblefaces with extra data
+    kinobles = [] #chiral noblefaces with extra data
     for i in range(len(intersdata)):
         noblefaces = [] #list of faces of nobles in this army
         
@@ -102,14 +105,21 @@ def main():
         
         for pset in planes:
             cycles = noblecheck(pset, group) #faces of the nobles in this plane
+            kicycles = noblecheck(pset, kigroup) #faces of chiral nobles
+            
+            if pset == {0, 33, 2, 35, 6, 7}:
+                print(cycles)
             for c in cycles:
                 if fullfilter(c, noblefaces, group): #filter out duplicates
                     noblefaces.append(c)
                     nobles.append(extra+[c])
+            for c in kicycles:
+                if fullfilter(c, noblefaces, group): #filter out duplicates
+                    noblefaces.append(c)
+                    kinobles.append(extra+[c])
     
-    print("Found",len(nobles),"nobles.")
     summary = open("noble-output/summary.txt", "w")
-    for i in range(len(nobles)):
+    for i in range(len(nobles)): #export nobles as OFF files
         n = nobles[i][2]
         faces = generate(n, group)
         
@@ -134,6 +144,34 @@ def main():
         file.close()
         
         summary.write("noble-"+str(i)+" "+str(nobles[i])+"\n")
+    
+    for i in range(len(kinobles)):
+        n = kinobles[i][2]
+        faces = generate(n, kigroup)
+        
+        file = open("noble-output/noble-"+str(len(nobles)+i)+".off", "w")
+        
+        print("noble-"+str(len(nobles)+i), kinobles[i][0])
+        
+        offcoords = army(kinobles[i][0])
+        
+        #first two lines
+        file.write("OFF\n")
+        file.write(str(len(offcoords))+" "+str(len(faces))+" 0\n") #not bothering calculating edge count
+        
+        for c in offcoords:
+            file.write(str(c[0])+" "+str(c[1])+" "+str(c[2])+"\n")
+        
+        for f in faces:
+            s = "".join(str(k)+" " for k in f)
+            s = str(len(f)) + " " + s + "\n"
+            file.write(s)
+        
+        file.close()
+        
+        summary.write("noble-"+str(i)+" "+str(kinobles[i])+"\n")
+    
+    print("Found",len(nobles)+len(kinobles),"nobles,",len(kinobles),"of which are chiral.")
 
 if __name__ == "__main__":
     main()
