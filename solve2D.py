@@ -86,8 +86,6 @@ def main():
             p3 = combineplanes(p3, cubicplanes[pair[0]]+cubicplanes[pair[1]])
         intersdata.append([p1,p2,p3])
     
-    print(len(intersdata))
-    
     #Now for the fun part: faceting.
     print("Faceting nobles...")
     nobles = [] #noblefaces with extra data
