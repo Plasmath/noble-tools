@@ -112,7 +112,8 @@ def noblecheck(p, group, minsize=4): #checks for noble polyhedra within a plane 
         for sym in planesyms: #filter out irremovable exotic faces
             permuted = permute(c, sym)
             permedges = [tuple(sorted([permuted[i],permuted[(i+1)%len(c)]])) for i in range(len(c))]
-            if len(set(edges) & set(permedges)) > 0:
+            if len(set(edges) & set(permedges)) > 0 and set(edges) != set(permedges):
+                print(c,permuted)
                 break
         else:
             equivs = [identdict[e] for e in edges if identdict[e] != []]
