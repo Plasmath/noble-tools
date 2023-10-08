@@ -67,9 +67,6 @@ def main():
         for pset in planes:
             cycles = noblecheck(pset, group) #faces of the nobles in this plane
             
-            if pset == {0,17,36,37,25,14}:
-                print("aaa",cycles)
-            
             for c in cycles:
                 if fullfilter(c, noblefaces, group): #filter out duplicates
                     noblefaces.append(c)
