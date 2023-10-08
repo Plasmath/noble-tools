@@ -8,8 +8,8 @@ from itertools import groupby
 
 """Run export2d before running this program."""
 """Specifications for solving"""
-army = icosahedral #Symmetry used
-group = ikegroup #Group to use
+army = octahedral #Symmetry used
+group = octgroup #Group to use
 extension = sp.sqrt(5) #Optional extension to factoring, use sp.sqrt(5) on icosahedral
 
 #volume function
@@ -66,6 +66,10 @@ def main():
         
         for pset in planes:
             cycles = noblecheck(pset, group) #faces of the nobles in this plane
+            
+            if pset == {0,17,36,37,25,14}:
+                print("aaa",cycles)
+            
             for c in cycles:
                 if fullfilter(c, noblefaces, group): #filter out duplicates
                     noblefaces.append(c)
@@ -77,6 +81,7 @@ def main():
     fsols = open("noble-output/critical-curves.txt","w")
     fsols.write(str(nobles))
     print(nobles)
+    print(len(nobles),"nobles found.")
 
 if __name__ == "__main__":
     main()

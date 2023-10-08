@@ -20,7 +20,7 @@ endval = Length[pairsdata]
 
 Print["Solving..."]
 
-Print[ endval "pairs." ]
+Print[ ToString[endval] <> " pairs." ]
 
 solves = {}
 For[i = startval, i <= endval, i++,
@@ -51,12 +51,14 @@ For[i = startval, i <= endval, i++,
 		AppendTo[solves, {}] ]
 	
 	If[ Mod[i, 30000] == 0,  (* Export in case of crashing *)
-		Export[ ToString[i] <> ".txt", solves];
-		solves = {} ];
+		Export[ "output/solutions/" <> ToString[i] <> ".txt", solves];
+		Print["Saving..."];
+		solves = {};
+		];
 	]
 
 
-Export["output/solutions.txt", solves]
+Export["output/solutions/extras.txt", solves]
 
 Print["Finished"]
 

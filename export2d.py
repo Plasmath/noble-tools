@@ -10,7 +10,7 @@ Creates two files within the output file:
 """
 
 """Specifications for solving"""
-army = icosahedral #Symmetry used
+army = octahedral #Symmetry used
 extension = sp.sqrt(5) #Optional extension to factoring, use sp.sqrt(5) on icosahedral
 
 #volume function
@@ -52,7 +52,11 @@ def main():
     print('Matching cubics...')
     sharedplanes = [] #Planes that will always have volume 0 no matter what
     cubicsmatched = [] #Duplicate cubics are matched together
-    for c in cubics:
+    for i in range(len(cubics)):
+        if i % 1000 == 0:
+            print('Finished matching',i,'tets out of',length)
+        c = cubics[i]
+        
         if c[0] == 0: #0 can't be factored
             sharedplanes = combineplanes(sharedplanes, c[1])
             continue
@@ -65,17 +69,27 @@ def main():
                 c1[1] = combineplanes(c1[1],c[1]) #Add second cubic's plane to this cubic
         if newcubic: #Adding new cubics to the list
             cubicsmatched.append(c)
+    length = len(cubicsmatched)
     
     print("Factoring cubics...")
     cubicsfactored = [] #Separate cubics into their component factors
-    for c in cubicsmatched:
+    for i in range(len(cubicsmatched)):
+        if i % 1000 == 0:
+            print('Finished factoring',i,'tets out of',length)
+        c = cubicsmatched[i]
+        
         fl = [ [factor,c[1]] for factor in factorize(c[0]) ]
         cubicsfactored += fl
     cubicsfactored = [k for k,v in groupby(sorted(cubicsfactored, key=repr))]
+    length = len(cubicsfactored)
     
     print("Final round of matching...")
     cubicsfinal = [] #Factored cubics are matched together
-    for c in cubicsfactored:
+    for i in range(len(cubicsfactored)):
+        if i % 1000 == 0:
+            print('Finished matching',i,'tets out of',length)
+        c = cubicsfactored[i]
+        
         newcubic = True
         for c1 in cubicsfinal:
             #Check if first and second cubic are the same cubic

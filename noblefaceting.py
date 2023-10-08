@@ -1,3 +1,5 @@
+import copy #used in faceting
+
 #Tetrahedral symmetry group
 tetgroup = eval(open("groups/tetgroup.txt","r").read())
 
@@ -26,17 +28,22 @@ def permute(p,q): #permute p based on the elements of q
     
     return tuple(r)
 
+def syms(p,group): #(non-identity) symmetries of group that fix a plane p
+    planesyms = []
+    for i in group:
+        perm = permute(p,i)
+        if set(perm) == set(p) and list(range(len(group))) != i:
+            planesyms.append(i)
+    return planesyms
+
 def generate(p,group): #copy plane vertices over symmetry group
     faces = []
     setfaces = []
-    equivalents = [] #symmetries of just plane p
     for i in group:
         perm = permute(p,i)
         if not set(perm) in setfaces:
             faces.append(perm)
             setfaces.append(set(perm))
-        elif set(perm) == set(p):
-            equivalents.append(perm)
     return faces
 
 def isduplicate(f,faces): #determine if f is already within the list of faces (not including symmetry)
@@ -52,22 +59,30 @@ def fullfilter(face,faces,group): #finds if face has a duplicate in faces
                 return False
     return True #return true if both tests are passed
 
-def noblecheck(p, group): #checks for noble polyhedra within a plane
+def noblecheck(p, group, minsize=4): #checks for noble polyhedra within a plane whose polygons have at least minsize sides
     #find edges in the original plane that intersect exactly 1 other plane in the symmetry group
     planes = generate(list(p), group)
+    planesyms = syms(list(p), group)
     
-    validedges = [] #edges that could be used to form nobles, forming a graph
+    validedges = [] #sets of edges that could be used to form nobles, forming a graph
     for plane in planes:
         e = tuple(sorted(tuple(p & set(plane)))) #intersection of planes
         if len(e) == 2:
-            validedges.append(e)
+            pair = [ e, tuple(sorted((list(p)[plane.index(e[0])], list(p)[plane.index(e[1])]))) ]
+            validedges.append(pair)
     
     #reformat validedges into a dictionary, for creating cycles
     edgedict = dict()
+    identdict = dict() #edges equivalent under symmetry
     edgedict[0] = []
     for edge in validedges:
-        edgedict[edge[0]] = edgedict.setdefault(edge[0], []) + [edge[1]]
-        edgedict[edge[1]] = edgedict.setdefault(edge[1], []) + [edge[0]]
+        if edge[0] != edge[1]:
+            identdict[edge[0]] = edge[1]
+        else:
+            identdict[edge[0]] = []
+        
+        edgedict[edge[0][0]] = set(list(edgedict.setdefault(edge[0][0], set())) + [edge[0][1]])
+        edgedict[edge[0][1]] = set(list(edgedict.setdefault(edge[0][1], set())) + [edge[0][0]])
     
     if len(edgedict[0]) < 2: #no cycles can be formed in this case, so we return no solution
         return []
@@ -83,11 +98,26 @@ def noblecheck(p, group): #checks for noble polyhedra within a plane
             for point in edgedict[poly[-1]]:
                 
                 if point in poly:
-                    if point == 0 and len(poly) > 3: #filter out tetrahedral compounds
+                    if point == 0 and len(poly) >= minsize and [0]+list(reversed(poly[1:])) not in cycles: #minsize filter
                         cycles.append( poly )
                 else:
                     lnew.append(poly + [point])
         l = lnew.copy()
     
+    #filter out fake cycles that have equivalent edges not in the cycle
+    finalcycles = []
+    for c in cycles:
+        edges = [tuple(sorted([c[i],c[(i+1)%len(c)]])) for i in range(len(c))] #edges of cycle
+        
+        for sym in planesyms: #filter out irremovable exotic faces
+            permuted = permute(c, sym)
+            permedges = [tuple(sorted([permuted[i],permuted[(i+1)%len(c)]])) for i in range(len(c))]
+            if len(set(edges) & set(permedges)) > 0:
+                break
+        else:
+            equivs = [identdict[e] for e in edges if identdict[e] != []]
+            if set(equivs) - set(edges) == set():
+                finalcycles.append(c)
+    
     #output results
-    return cycles
+    return finalcycles
