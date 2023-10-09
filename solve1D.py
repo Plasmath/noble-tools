@@ -107,13 +107,12 @@ def main():
             cycles = noblecheck(pset, group) #faces of the nobles in this plane
             kicycles = noblecheck(pset, kigroup) #faces of chiral nobles
             
-            if pset == {0, 33, 2, 35, 6, 7}:
-                print(cycles)
             for c in cycles:
                 if fullfilter(c, noblefaces, group): #filter out duplicates
                     noblefaces.append(c)
                     nobles.append(extra+[c])
             for c in kicycles:
+                
                 if fullfilter(c, noblefaces, group): #filter out duplicates
                     noblefaces.append(c)
                     kinobles.append(extra+[c])

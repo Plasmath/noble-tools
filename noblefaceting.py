@@ -126,7 +126,11 @@ def noblecheck(p, group, minsize=4): #checks for noble polyhedra within a plane 
                 break
         else:
             equivs = [identdict[e] for e in edges if identdict[e] != []]
-            if set(equivs) - set(edges) == set():
+            
+            s = set(equivs) - set(edges) #this must be empty or form a cycle
+            otherpoints = set(sum(s,()))
+            
+            if all(len(edgedict[i]) == 2 for i in otherpoints):
                 finalcycles.append(c)
     
     #output results
