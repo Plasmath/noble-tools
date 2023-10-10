@@ -144,6 +144,8 @@ def main():
         
         summary.write("noble-"+str(i)+" "+str(nobles[i])+"\n")
     
+    summary.write("\nChirals:\n")
+    
     for i in range(len(kinobles)):
         n = kinobles[i][2]
         faces = generate(n, kigroup)
@@ -168,7 +170,7 @@ def main():
         
         file.close()
         
-        summary.write("noble-"+str(i)+" "+str(kinobles[i])+"\n")
+        summary.write("noble-"+str(i+len(nobles))+" "+str(kinobles[i])+"\n")
     
     print("Found",len(nobles)+len(kinobles),"nobles,",len(kinobles),"of which are chiral.")
 
