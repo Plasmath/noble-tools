@@ -29,6 +29,10 @@ kisridgroup = eval(open("groups/1D/kisridgroup.txt","r").read())
 kitidgroup = eval(open("groups/1D/kitidgroup.txt","r").read())
 kitigroup = eval(open("groups/1D/kitigroup.txt","r").read())
 
+#Pyritohedral 1D symmetry groups
+pysircogroup = eval(open("groups/1D/pysircogroup.txt","r").read())
+pyticgroup = eval(open("groups/1D/pyticgroup.txt","r").read())
+
 def permute(p,q): #permute p based on the elements of q
     size = len(p)
     

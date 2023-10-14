@@ -1,12 +1,10 @@
 from volumes import combineplanes
 from noblefaceting import noblecheck, fullfilter, generate
-from noblefaceting import ratetgroup, tutgroup, sircogroup, ticgroup, toegroup, sridgroup, tidgroup, tigroup
-from noblefaceting import kiratetgroup, kitutgroup, kisircogroup, kiticgroup, kitoegroup, kisridgroup, kitidgroup, kitigroup
-from coordinates import ratet, tut, sirco, tic, toe, srid, tid, ti, doSymbolic
+from noblefaceting import pysircogroup, pyticgroup
+from coordinates import sirco, tic, doSymbolic
 
-army = tid #Army to use (should be equal to group)
-group = tidgroup #Group to use
-kigroup = kitidgroup #Chiral group to use. These symmetries have to be checked separately due to noble polyhedra being able to have lower symmetry compared to their convex hull 
+army = tic #Army to use (should be equal to group)
+group = pyticgroup #Pyritohedral group to use
 minprecision = 8 #minimum digits of precision on solutions
 minvalue = 1e-8 #minimum value of solutions, as some solutions at 0 are interpreted as small positive numbers
 minsides = 4 #minimum number of sides to a face, use 4 by default
@@ -106,16 +104,11 @@ def main():
         
         for pset in planes:
             cycles = noblecheck(pset, group, minsize=minsides) #faces of the nobles in this plane
-            kicycles = noblecheck(pset, kigroup, minsize=minsides) #faces of chiral nobles
             
             for c in cycles:
                 if fullfilter(c, noblefaces, group): #filter out duplicates
                     noblefaces.append(c)
                     nobles.append(extra+[c])
-            for c in kicycles:
-                if fullfilter(c, noblefaces, group): #filter out duplicates
-                    noblefaces.append(c)
-                    kinobles.append(extra+[c])
     
     summary = open("noble-output/summary.txt", "w")
     for i in range(len(nobles)): #export nobles as OFF files
@@ -144,36 +137,6 @@ def main():
         
         summary.write("noble-"+str(i)+" "+str(nobles[i])+"\n")
     
-    summary.write("\nChirals:\n")
-    
-    for i in range(len(kinobles)):
-        n = kinobles[i][2]
-        faces = generate(n, kigroup)
-        
-        file = open("noble-output/noble-"+str(len(nobles)+i)+".off", "w")
-        
-        print("noble-"+str(len(nobles)+i), kinobles[i][0])
-        print(kinobles[i])
-        
-        offcoords = army(kinobles[i][0])
-        
-        #first two lines
-        file.write("OFF\n")
-        file.write(str(len(offcoords))+" "+str(len(faces))+" 0\n") #not bothering calculating edge count
-        
-        for c in offcoords:
-            file.write(str(c[0])+" "+str(c[1])+" "+str(c[2])+"\n")
-        
-        for f in faces:
-            s = "".join(str(k)+" " for k in f)
-            s = str(len(f)) + " " + s + "\n"
-            file.write(s)
-        
-        file.close()
-        
-        summary.write("noble-"+str(i+len(nobles))+" "+str(kinobles[i])+"\n")
-    
-    print("Found",len(nobles)+len(kinobles),"nobles,",len(kinobles),"of which are chiral.")
-
+    print("Found",len(nobles)+len(kinobles),"pyritohedral nobles.")
 if __name__ == "__main__":
     main()
