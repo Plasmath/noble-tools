@@ -112,8 +112,6 @@ def main():
                     noblefaces.append(c)
                     nobles.append(extra+[c])
             for c in kicycles:
-                if c == [0, 29, 48, 23] and extra[0] == 1.8667603991738622:
-                    print(pset)
                 if fullfilter(c, noblefaces, group): #filter out duplicates
                     noblefaces.append(c)
                     kinobles.append(extra+[c])
