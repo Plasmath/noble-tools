@@ -69,16 +69,17 @@ def fullfilter(face,faces,group): #finds if face has a duplicate in faces
                 return False
     return True #return true if both tests are passed
 
-def noblecheck(p, group, minsize=4): #checks for noble polyhedra within a plane whose polygons have at least minsize sides
+def noblecheck(P, group, minsize=4): #checks for noble polyhedra within a plane whose polygons have at least minsize sides
+    p = list(P)
     #find edges in the original plane that intersect exactly 1 other plane in the symmetry group
-    planes = generate(list(p), group)
-    planesyms = syms(list(p), group)
+    planes = generate(p, group)
+    planesyms = syms(p, group)
     
     validedges = [] #sets of edges that could be used to form nobles, forming a graph
     for plane in planes:
-        e = tuple(sorted(tuple(p & set(plane)))) #intersection of planes
+        e = tuple(sorted(tuple(P & set(plane)))) #intersection of planes
         if len(e) == 2:
-            pair = [ e, tuple(sorted((list(p)[plane.index(e[0])], list(p)[plane.index(e[1])]))) ]
+            pair = [ e, tuple(sorted((p[plane.index(e[0])], p[plane.index(e[1])]))) ]
             validedges.append(pair)
     
     #reformat validedges into a dictionary, for creating cycles
@@ -89,7 +90,7 @@ def noblecheck(p, group, minsize=4): #checks for noble polyhedra within a plane 
         if edge[0] != edge[1]:
             identdict[edge[0]] = edge[1]
         else:
-            identdict[edge[0]] = []
+            identdict[edge[0]] = identdict.setdefault(edge[0],[])
         
         edgedict[edge[0][0]] = set(list(edgedict.setdefault(edge[0][0], set())) + [edge[0][1]])
         edgedict[edge[0][1]] = set(list(edgedict.setdefault(edge[0][1], set())) + [edge[0][0]])
@@ -119,19 +120,19 @@ def noblecheck(p, group, minsize=4): #checks for noble polyhedra within a plane 
     for c in cycles:
         edges = [tuple(sorted([c[i],c[(i+1)%len(c)]])) for i in range(len(c))] #edges of cycle
         
-        for sym in planesyms: #filter out irremovable exotic faces
+        idents = [identdict[e] for e in edges if identdict[e] not in edges and identdict[e] != []] #identical edges with no corresponding pair
+        
+        for sym in planesyms:
+            #filter out irremovable exotic faces
             permuted = permute(c, sym)
             permedges = [tuple(sorted([permuted[i],permuted[(i+1)%len(c)]])) for i in range(len(c))]
             if len(set(edges) & set(permedges)) > 0 and set(edges) != set(permedges):
                 break
-        else:
-            equivs = [identdict[e] for e in edges if identdict[e] != []]
             
-            s = set(equivs) - set(edges) #this must be empty or form a cycle
-            otherpoints = set(sum(s,()))
-            
-            if all(len(edgedict[i]) == 2 for i in otherpoints):
-                finalcycles.append(c)
+            idents = [e for e in idents if e not in permedges] #filter out edges in equivalent faces (found in fissary duals)
+        
+        if idents == []:
+            finalcycles.append(c)
     
     #output results
     return finalcycles

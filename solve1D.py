@@ -104,15 +104,16 @@ def main():
         extra = intersdata[i][:2] #other data
         
         for pset in planes:
-            cycles = noblecheck(pset, group) #faces of the nobles in this plane
-            kicycles = noblecheck(pset, kigroup) #faces of chiral nobles
+            cycles = noblecheck(pset, group, minsize=3) #faces of the nobles in this plane
+            kicycles = noblecheck(pset, kigroup, minsize=3) #faces of chiral nobles
             
             for c in cycles:
                 if fullfilter(c, noblefaces, group): #filter out duplicates
                     noblefaces.append(c)
                     nobles.append(extra+[c])
             for c in kicycles:
-                
+                if c == [0, 29, 48, 23] and extra[0] == 1.8667603991738622:
+                    print(pset)
                 if fullfilter(c, noblefaces, group): #filter out duplicates
                     noblefaces.append(c)
                     kinobles.append(extra+[c])
@@ -153,6 +154,7 @@ def main():
         file = open("noble-output/noble-"+str(len(nobles)+i)+".off", "w")
         
         print("noble-"+str(len(nobles)+i), kinobles[i][0])
+        print(kinobles[i])
         
         offcoords = army(kinobles[i][0])
         
