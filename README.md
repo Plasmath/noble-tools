@@ -9,8 +9,9 @@ The following programs are meant to be used as tools; all others help support th
   * **export1D.py**
   * **intersect1D.py**
   * **solve1D.py**
-  * Make sure to configure the two python files with the correct armies and symmetries before running.
+    * **solvepyritohedral.py** when working with truncated cube or small rhombicuboctahedral armies, as these armies have special pyritohedral subsymmetries.
+  * ## Always make sure to configure the two python files with the correct armies and symmetries before running!
 
 ## Todo
-* Get rid of the junk solutions in 1D search
+* Make critical curve searching work better
 * Finish 2D search
