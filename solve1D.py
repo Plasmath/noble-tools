@@ -4,9 +4,9 @@ from noblefaceting import ratetgroup, tutgroup, sircogroup, ticgroup, toegroup, 
 from noblefaceting import kiratetgroup, kitutgroup, kisircogroup, kiticgroup, kitoegroup, kisridgroup, kitidgroup, kitigroup
 from coordinates import ratet, tut, sirco, tic, toe, srid, tid, ti, doSymbolic
 
-army = tid #Army to use (should be equal to group)
-group = tidgroup #Group to use
-kigroup = kitidgroup #Chiral group to use. These symmetries have to be checked separately due to noble polyhedra being able to have lower symmetry compared to their convex hull 
+army = sirco #Army to use (should be equal to group)
+group = sircogroup #Group to use
+kigroup = kitoegroup #Chiral group to use. These symmetries have to be checked separately due to noble polyhedra being able to have lower symmetry compared to their convex hull 
 minprecision = 8 #minimum digits of precision on solutions
 minvalue = 1e-8 #minimum value of solutions, as some solutions at 0 are interpreted as small positive numbers
 minsides = 4 #minimum number of sides to a face, use 4 by default

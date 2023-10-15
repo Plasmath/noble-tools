@@ -11,7 +11,7 @@ Creates two files within the output file:
 """
 
 """Specifications for solving"""
-army = tic #Symmetry used
+army = sirco #Symmetry used
 extension = sp.sqrt(5) #Optional extension to factoring, use sp.sqrt(5) on icosahedral
 
 #volume function

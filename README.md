@@ -13,5 +13,4 @@ The following programs are meant to be used as tools; all others help support th
   * ## Always make sure to configure the two python files with the correct armies and symmetries before running!
 
 ## Todo
-* Make critical curve searching work better
 * Finish 2D search

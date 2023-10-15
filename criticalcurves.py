@@ -74,10 +74,40 @@ def main():
         if noblefaces != []:
             nobles.append([cubic,noblefaces])
     
-    #Export solutions, because these aren't offs this is pretty easily formatted
+    #Export solutions, ask for example solutions to cubic plane curves because it's easier
+    k = 0
+    for i in range(len(nobles)): #export nobles as OFF files   
+        sol = input("Solution for "+str(nobles[i][0])+" as ordered pair: ")
+        if sol == "":
+            continue
+        sol = eval(sol)
+        
+        for n in nobles[i][1]:
+            faces = generate(n, group)
+            
+            file = open("noble-output/noble-"+str(k)+".off", "w")
+            print("noble-"+str(k), nobles[i][0], n)
+            
+            offcoords = army(sol[0],sol[1])
+            
+            #first two lines
+            file.write("OFF\n")
+            file.write(str(len(offcoords))+" "+str(len(faces))+" 0\n") #not bothering calculating edge count
+            for c in offcoords:
+                file.write(str(c[0])+" "+str(c[1])+" "+str(c[2])+"\n")
+            
+            for f in faces:
+                s = "".join(str(k)+" " for k in f)
+                s = str(len(f)) + " " + s + "\n"
+                file.write(s)
+            
+            file.close()
+            
+            k += 1
+    
     fsols = open("noble-output/critical-curves.txt","w")
     fsols.write(str(nobles))
-    print(nobles)
+    #print(nobles)
     print(len(nobles),"nobles found.")
 
 if __name__ == "__main__":
