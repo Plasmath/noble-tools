@@ -10,7 +10,7 @@ Creates two files within the output file:
 """
 
 """Specifications for solving"""
-army = octahedral #Symmetry used
+army = icosahedral #Symmetry used
 extension = sp.sqrt(5) #Optional extension to factoring, use sp.sqrt(5) on icosahedral
 
 #volume function

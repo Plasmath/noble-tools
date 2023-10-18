@@ -8,8 +8,8 @@ from itertools import groupby
 
 """Run export2d before running this program."""
 """Specifications for solving"""
-army = octahedral #Symmetry used
-group = octgroup #Group to use
+army = icosahedral #Symmetry used
+group = ikegroup #Group to use
 extension = sp.sqrt(5) #Optional extension to factoring, use sp.sqrt(5) on icosahedral
 
 #volume function
@@ -74,10 +74,14 @@ def main():
         if noblefaces != []:
             nobles.append([cubic,noblefaces])
     
+    print(len(nobles),"nobles found.")
+    print("Press enter to skip noble polyhedra without positive solutions.")
+    
+    doSymbolic(False) #disable for off export
+    
     #Export solutions, ask for example solutions to cubic plane curves because it's easier
-    k = 0
     for i in range(len(nobles)): #export nobles as OFF files   
-        sol = input("Solution for "+str(nobles[i][0])+" as ordered pair: ")
+        sol = input(str(i)+"/"+str(len(nobles))+"Solution for "+str(nobles[i][0]).replace("**","^").replace("sqrt(5)","\sqrt{5}")+" = 0 as ordered pair: ")
         if sol == "":
             continue
         sol = eval(sol)
@@ -85,8 +89,8 @@ def main():
         for n in nobles[i][1]:
             faces = generate(n, group)
             
-            file = open("noble-output/noble-"+str(k)+".off", "w")
-            print("noble-"+str(k), nobles[i][0], n)
+            file = open("noble-output/noble-"+str(i)+".off", "w")
+            print("noble-"+str(i), nobles[i][0], n)
             
             offcoords = army(sol[0],sol[1])
             
@@ -102,8 +106,6 @@ def main():
                 file.write(s)
             
             file.close()
-            
-            k += 1
     
     fsols = open("noble-output/critical-curves.txt","w")
     fsols.write(str(nobles))
