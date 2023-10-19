@@ -92,6 +92,7 @@ def main():
         p3 = shared.copy() #critical planes, includes shared planes
         for cubic in p2:
             p3 = combineplanes(p3, cubicplanes[cubic])
+        p3 = [plane for plane in p3 if not plane in shared]
         intersdata.append([p1,p2,p3])
     
     #Now for the fun part: faceting.
